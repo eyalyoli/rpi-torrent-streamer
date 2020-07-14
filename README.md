@@ -1,12 +1,23 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Prerequisites
+Install node & npm via:
+```
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt update
+sudo apt install nodejs
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start:server`
+Runs the server app.
 
-Runs the app in the development mode.<br />
+### `npm start`/`npm run start:client`
+
+Runs the client app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
