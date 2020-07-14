@@ -1,11 +1,17 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Prerequisites
-Install node & npm via:
+Install node & python:
 ```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt update
-sudo apt install nodejs
+sudo apt install nodejs npm
+sudo apt install python
+```
+Install libs:
+```
+npm install
+pip install qbittorrent-api
 ```
 
 ## Available Scripts
