@@ -1,23 +1,25 @@
-const TorrentSearchApi = require("torrent-search-api");
 const cp = require("child_process");
 const tc = require("./torrent-client");
 const cfg = require("../commons/config").server;
 
-TorrentSearchApi.enablePublicProviders();
-
-//console.log(TorrentSearchApi.getProviders());
-
+// >>>>>>>>>>>>>>>>> Server init >>>>>>>>>>>>>>>>>
 var express = require("express");
+const { runTorrentClient, getActiveTorrentsList, findTorrent, getHash } = require("./torrents-utils");
+const { search } = require("torrent-search-api");
 var app = express();
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get("/", async function(req, res) {
-  res.send("hello");
+//Setting up server
+var server = app.listen(process.env.PORT || 5050, async function() {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+  await runTorrentClient();
 });
+// <<<<<<<<<<<<<<<<< Server init <<<<<<<<<<<<<<<<<
 
+// >>>>>>>>>>>>>>>>> Routing >>>>>>>>>>>>>>>>>
 app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
   const r = await search(cfg.ALL_PROVIDERS[req.params.provider], req.params.query);
@@ -27,7 +29,7 @@ app.get("/search/:provider/:query", async function(req, res) {
 
 app.post("/download", async function(req, res) {
   console.log("download=" + JSON.stringify(req.body));
-  r = await tc.addTorrent(req.body.magnet, (err) => {
+  await tc.addTorrent(req.body.magnet, (err) => {
     if (err) res.status(500).send("error");
     else res.send("OK");
   });
@@ -35,7 +37,7 @@ app.post("/download", async function(req, res) {
 
 app.get("/remove/:hash", async function(req, res) {
   console.log("download=" + JSON.stringify(req.params.hash));
-  r = await tc.removeTorrent(req.params.hash, (err) => {
+  await tc.removeTorrent(req.params.hash, (err) => {
     if (err) res.status(500).send("error");
     else res.send("OK");
   });
@@ -43,7 +45,7 @@ app.get("/remove/:hash", async function(req, res) {
 
 let currentTorrents = [];
 app.get("/downloading", function(req, res) {
-  updateCurrentTorrentsList((ts) => {
+  getActiveTorrentsList((ts) => {
     currentTorrents = ts;
     res.json(ts);
   });
@@ -75,55 +77,4 @@ app.get("/stream/:hash", async function(req, res) {
       .send("torrent was not found. please download it before you stream.");
   }
 });
-
-
-let tcProc;
-async function runTorrentClient() {
-  console.log(JSON.stringify(cfg))
-  tcProc = await cp.exec(cfg.TORRENT_CLIENT_CMD);
-  console.log("torrent client is running " + tcProc.pid);
-}
-
-function updateCurrentTorrentsList(cb) {
-  tc.getAllTorrents((err, ts) => {
-    if (err) throw err;
-    if (ts)
-      console.log(
-        "current torrents list updated with " + ts.length + " entries"
-      );
-    cb(ts);
-  });
-}
-
-function findTorrent(hash, list) {
-  let res = undefined;
-  list.forEach((t) => {
-    console.log(t.hash, hash);
-    if (t.hash === hash) {
-      console.log("got");
-      res = t;
-    }
-  });
-  return res;
-}
-
-//Setting up server
-var server = app.listen(process.env.PORT || 5050, async function() {
-  var port = server.address().port;
-  console.log("App now running on port", port);
-  await runTorrentClient();
-
-  // await updateCurrentTorrentsList();
-  // setInterval(() => {
-  //   updateCurrentTorrentsList();
-  // }, TORRENT_REFRESH_RATE);
-});
-
-async function search(provider, query) {
-  return await TorrentSearchApi.search([provider], query, "All", cfg.SEARCH_LIMIT);
-}
-
-async function getHash(torrent) {
-  const magnet = TorrentSearchApi.getMagnet(torrent);
-  return (await magnet).match(/xt=[a-zA-Z:]+([0-9A-Za-z]+)/)[1];
-}
+// <<<<<<<<<<<<<<<<< Routing <<<<<<<<<<<<<<<<<
