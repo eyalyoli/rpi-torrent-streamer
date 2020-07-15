@@ -2,21 +2,12 @@ const TorrentSearchApi = require("torrent-search-api");
 const cp = require("child_process");
 const tc = require("./torrent-client");
 
-const SEARCH_LIMIT = 20;
-const ALL_PROVIDERS = [
-  "ThePirateBay",
-  "1337x",
-  "Rarbg",
-  "Eztv",
-  "Yts",
-  "KickassTorrents",
-];
-
 TorrentSearchApi.enablePublicProviders();
 
 //console.log(TorrentSearchApi.getProviders());
 
 var express = require("express");
+const { TORRENT_READY_TO_STREAM_THRESHOLD, PLAYER_CMD, TORRENT_CLIENT_CMD, ALL_PROVIDERS, SEARCH_LIMIT } = require("./commons/constants");
 var app = express();
 
 app.use(express.json()); // for parsing application/json
@@ -58,9 +49,6 @@ app.get("/downloading", function(req, res) {
   });
 });
 
-const PLAYER_CMD = "vlc";
-const TORRENT_READY_TO_STREAM_THRESHOLD = 0.1;
-
 app.get("/stream/:hash", async function(req, res) {
   const hash = req.params.hash;
   console.log("stream=" + JSON.stringify(hash));
@@ -88,14 +76,12 @@ app.get("/stream/:hash", async function(req, res) {
   }
 });
 
-const TORRENT_CLIENT_CMD = "qbittorrent";
+
 let tcProc;
 async function runTorrentClient() {
   tcProc = await cp.exec(TORRENT_CLIENT_CMD);
   console.log("torrent client is running " + tcProc.pid);
 }
-
-const TORRENT_REFRESH_RATE = 5000;
 
 function updateCurrentTorrentsList(cb) {
   tc.getAllTorrents((err, ts) => {

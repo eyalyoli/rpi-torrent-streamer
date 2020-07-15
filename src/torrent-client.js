@@ -1,6 +1,5 @@
 const py = require("python-shell");
-
-const PY_SCRIPT_PATH = "qbittorrent.py";
+const { PY_SCRIPT_PATH } = require("./commons/constants");
 
 exports.addTorrent = (magnet,cb) => {
   console.log('magnet',magnet)
