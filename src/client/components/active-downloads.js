@@ -6,6 +6,7 @@ export function ActiveDownloads(props) {
   const [downloads, setDownloads] = useState([]);
 
   useEffect(() => {
+    get();
     setInterval(() => {
       get();
     }, cfg.REFRESH_INTERVALS);
@@ -54,18 +55,29 @@ export function ActiveDownloads(props) {
   let i = 0;
   const listItems = downloads.map((res) => {
     const list = () => {
+      const dlPercent = Math.min(
+        Math.round((res.downloaded / res.size) * 100),
+        100
+      );
+      let dlSpeed = res.dlspeed / 1000000;
+      if (dlSpeed < 1) dlSpeed = Math.round(dlSpeed * 1000) + " Kb/s";
+      else dlSpeed = Math.round(dlSpeed) + " Mb/s";
+
       return (
         <Card style={{ width: "18rem" }} key={res.hash}>
           <Card.Body>
             <Card.Title>{res.name}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              Card Subtitle
+              {dlPercent}% @{" " + dlSpeed}
             </Card.Subtitle>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
-            <Card.Link onClick={() => streamTorrent(res.hash)}>
+            <Card.Text>N/a</Card.Text>
+            <Card.Link
+              onClick={() =>
+                dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD
+                  ? streamTorrent(res.hash)
+                  : alert("still buffering... torrent is not ready to stream")
+              }
+            >
               Stream
             </Card.Link>
             <Card.Link onClick={() => removeTorrent(res.hash)}>
