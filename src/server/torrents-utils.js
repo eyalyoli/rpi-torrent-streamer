@@ -16,10 +16,10 @@ exports.runTorrentClient = async () => {
 exports.getActiveTorrentsList = (cb) => {
   tc.getAllTorrents((err, ts) => {
     if (err) throw err;
-    if (ts)
-      console.log(
-        "current torrents list updated with " + ts.length + " entries"
-      );
+    // if (ts)
+    //   console.log(
+    //     "current torrents list updated with " + ts.length + " entries"
+    //   );
     cb(ts);
   });
 };

@@ -1,12 +1,12 @@
 {
   "client": {
-    "ITEMS_IN_ROW": 5,
+    "ITEMS_IN_ROW": 4,
+    "TORRENT_READY_TO_STREAM_THRESHOLD": 6,
     "REFRESH_INTERVALS": 5000
   },
 
   "server": {
     "PLAYER_CMD": "vlc",
-    "TORRENT_READY_TO_STREAM_THRESHOLD": 0.06,
     "TORRENT_CLIENT_CMD": "qbittorrent",
     "SEARCH_LIMIT": 20,
     "ALL_PROVIDERS": [
