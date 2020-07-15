@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
 const cfg = require("../../commons/config.json").client;
 
 export function ActiveDownloads(props) {
@@ -52,7 +52,6 @@ export function ActiveDownloads(props) {
     }
   }
 
-  let i = 0;
   const listItems = downloads.map((res) => {
     const list = () => {
       const dlPercent = Math.min(
