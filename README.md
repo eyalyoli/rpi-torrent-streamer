@@ -18,10 +18,13 @@ pip install qbittorrent-api
 
 In the project directory, you can run:
 
+### `npm start`
+Runs both server & client.
+
 ### `npm run start:server`
 Runs the server app.
 
-### `npm start`/`npm run start:client`
+### `npm run start:client`
 
 Runs the client app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
