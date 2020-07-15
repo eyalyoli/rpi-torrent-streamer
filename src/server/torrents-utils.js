@@ -1,18 +1,19 @@
 const TorrentSearchApi = require("torrent-search-api");
 const cfg = require("../commons/config").server;
 const cp = require("child_process");
+const tc = require("./torrent-client");
 
 TorrentSearchApi.enablePublicProviders();
 //console.log(TorrentSearchApi.getProviders());
 
 let tcProc;
-export async function runTorrentClient() {
+exports.runTorrentClient = async () => {
   console.log(JSON.stringify(cfg));
   tcProc = await cp.exec(cfg.TORRENT_CLIENT_CMD);
   console.log("torrent client is running " + tcProc.pid);
-}
+};
 
-export function getActiveTorrentsList(cb) {
+exports.getActiveTorrentsList = (cb) => {
   tc.getAllTorrents((err, ts) => {
     if (err) throw err;
     if (ts)
@@ -21,9 +22,9 @@ export function getActiveTorrentsList(cb) {
       );
     cb(ts);
   });
-}
+};
 
-export function findTorrent(hash, list) {
+exports.findTorrent = (hash, list) => {
   let res = undefined;
   list.forEach((t) => {
     console.log(t.hash, hash);
@@ -33,18 +34,18 @@ export function findTorrent(hash, list) {
     }
   });
   return res;
-}
+};
 
-export async function search(provider, query) {
+exports.search = async (provider, query) => {
   return await TorrentSearchApi.search(
     [provider],
     query,
     "All",
     cfg.SEARCH_LIMIT
   );
-}
+};
 
-export async function getHash(torrent) {
+exports.getHash = async (torrent) => {
   const magnet = TorrentSearchApi.getMagnet(torrent);
   return (await magnet).match(/xt=[a-zA-Z:]+([0-9A-Za-z]+)/)[1];
-}
+};

@@ -1,10 +1,13 @@
-const cp = require("child_process");
-const tc = require("./torrent-client");
 const cfg = require("../commons/config").server;
 
 // >>>>>>>>>>>>>>>>> Server init >>>>>>>>>>>>>>>>>
 var express = require("express");
-const { runTorrentClient, getActiveTorrentsList, findTorrent, getHash } = require("./torrents-utils");
+const {
+  runTorrentClient,
+  getActiveTorrentsList,
+  findTorrent,
+  getHash,
+} = require("./torrents-utils");
 const { search } = require("torrent-search-api");
 var app = express();
 
@@ -22,7 +25,10 @@ var server = app.listen(process.env.PORT || 5050, async function() {
 // >>>>>>>>>>>>>>>>> Routing >>>>>>>>>>>>>>>>>
 app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
-  const r = await search(cfg.ALL_PROVIDERS[req.params.provider], req.params.query);
+  const r = await search(
+    cfg.ALL_PROVIDERS[req.params.provider],
+    req.params.query
+  );
   console.log(await getHash(r[0]));
   res.send(r);
 });
@@ -63,7 +69,9 @@ app.get("/stream/:hash", async function(req, res) {
       const percent = t.downloaded / t.size;
       console.log("finished=" + percent);
       if (percent > cfg.TORRENT_READY_TO_STREAM_THRESHOLD) {
-        const playerProc = await cp.exec(cfg.PLAYER_CMD + ' "' + result.path + '"');
+        const playerProc = await cp.exec(
+          cfg.PLAYER_CMD + ' "' + result.path + '"'
+        );
         console.log("running player at " + playerProc.pid);
         res.send("OK");
       } else
