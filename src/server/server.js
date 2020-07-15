@@ -33,7 +33,6 @@ app.get("/search/:provider/:query", async function(req, res) {
     cfg.ALL_PROVIDERS[req.params.provider],
     req.params.query
   );
-  console.log(await getHash(r[0]));
   res.send(r);
 });
 
