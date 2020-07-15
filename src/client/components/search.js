@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { pad } from "../commons/utils";
+import { pad } from "../../commons/utils";
 
 export function Search(props) {
   const [query, setQuery] = useState("");

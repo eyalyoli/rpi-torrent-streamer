@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { REFRESH_INTERVALS } from "../commons/constants";
+const cfg = require("../../commons/config.json").client;
 
 export function ActiveDownloads(props) {
   const [downloads, setDownloads] = useState([]);
@@ -8,7 +8,7 @@ export function ActiveDownloads(props) {
   useEffect(() => {
     setInterval(() => {
       get();
-    }, REFRESH_INTERVALS);
+    }, cfg.REFRESH_INTERVALS);
   }, []);
 
   async function streamTorrent(hash) {

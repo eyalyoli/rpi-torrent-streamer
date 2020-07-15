@@ -1,13 +1,13 @@
 const TorrentSearchApi = require("torrent-search-api");
 const cp = require("child_process");
 const tc = require("./torrent-client");
+const cfg = require("../commons/config").server;
 
 TorrentSearchApi.enablePublicProviders();
 
 //console.log(TorrentSearchApi.getProviders());
 
 var express = require("express");
-const { TORRENT_READY_TO_STREAM_THRESHOLD, PLAYER_CMD, TORRENT_CLIENT_CMD, ALL_PROVIDERS, SEARCH_LIMIT } = require("./commons/constants");
 var app = express();
 
 app.use(express.json()); // for parsing application/json
@@ -20,7 +20,7 @@ app.get("/", async function(req, res) {
 
 app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
-  const r = await search(ALL_PROVIDERS[req.params.provider], req.params.query);
+  const r = await search(cfg.ALL_PROVIDERS[req.params.provider], req.params.query);
   console.log(await getHash(r[0]));
   res.send(r);
 });
@@ -60,8 +60,8 @@ app.get("/stream/:hash", async function(req, res) {
       if (err) res.status(500).send("error");
       const percent = t.downloaded / t.size;
       console.log("finished=" + percent);
-      if (percent > TORRENT_READY_TO_STREAM_THRESHOLD) {
-        const playerProc = await cp.exec(PLAYER_CMD + ' "' + result.path + '"');
+      if (percent > cfg.TORRENT_READY_TO_STREAM_THRESHOLD) {
+        const playerProc = await cp.exec(cfg.PLAYER_CMD + ' "' + result.path + '"');
         console.log("running player at " + playerProc.pid);
         res.send("OK");
       } else
@@ -79,7 +79,8 @@ app.get("/stream/:hash", async function(req, res) {
 
 let tcProc;
 async function runTorrentClient() {
-  tcProc = await cp.exec(TORRENT_CLIENT_CMD);
+  console.log(JSON.stringify(cfg))
+  tcProc = await cp.exec(cfg.TORRENT_CLIENT_CMD);
   console.log("torrent client is running " + tcProc.pid);
 }
 
@@ -119,7 +120,7 @@ var server = app.listen(process.env.PORT || 5050, async function() {
 });
 
 async function search(provider, query) {
-  return await TorrentSearchApi.search([provider], query, "All", SEARCH_LIMIT);
+  return await TorrentSearchApi.search([provider], query, "All", cfg.SEARCH_LIMIT);
 }
 
 async function getHash(torrent) {

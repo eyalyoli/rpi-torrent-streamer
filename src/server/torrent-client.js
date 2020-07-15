@@ -1,9 +1,9 @@
 const py = require("python-shell");
-const { PY_SCRIPT_PATH } = require("./commons/constants");
+const cfg = require("../commons/config").server;
 
 exports.addTorrent = (magnet,cb) => {
   console.log('magnet',magnet)
-  py.PythonShell.run(PY_SCRIPT_PATH, { args: ["add", magnet] }, function(
+  py.PythonShell.run(cfg.PY_SCRIPT_PATH, { args: ["add", magnet] }, function(
     err,
     results
   ) {
@@ -13,7 +13,7 @@ exports.addTorrent = (magnet,cb) => {
 };
 
 exports.getAllTorrents =  (cb) => {
-   py.PythonShell.run(PY_SCRIPT_PATH, { args: ["list"] }, function(
+   py.PythonShell.run(cfg.PY_SCRIPT_PATH, { args: ["list"] }, function(
     err,
     results
   ) {
@@ -25,7 +25,7 @@ exports.getAllTorrents =  (cb) => {
 };
 
 exports.removeTorrent = (magnet,cb) => {
-  py.PythonShell.run(PY_SCRIPT_PATH, { args: ["remove", magnet] }, function(
+  py.PythonShell.run(cfg.PY_SCRIPT_PATH, { args: ["remove", magnet] }, function(
     err,
     results
   ) {
@@ -36,7 +36,7 @@ exports.removeTorrent = (magnet,cb) => {
 };
 
 exports.getTorrentPath = (magnet,cb) => {
-  py.PythonShell.run(PY_SCRIPT_PATH, { args: ["getpath", magnet] }, function(
+  py.PythonShell.run(cfg.PY_SCRIPT_PATH, { args: ["getpath", magnet] }, function(
     err,
     results
   ) {

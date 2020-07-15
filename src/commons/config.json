@@ -1,0 +1,22 @@
+{
+  "client": {
+    "ITEMS_IN_ROW": 5,
+    "REFRESH_INTERVALS": 5000
+  },
+
+  "server": {
+    "PLAYER_CMD": "vlc",
+    "TORRENT_READY_TO_STREAM_THRESHOLD": 0.1,
+    "TORRENT_CLIENT_CMD": "qbittorrent",
+    "SEARCH_LIMIT": 20,
+    "ALL_PROVIDERS": [
+      "ThePirateBay",
+      "1337x",
+      "Rarbg",
+      "Eztv",
+      "Yts",
+      "KickassTorrents"
+    ],
+    "PY_SCRIPT_PATH": "qbittorrent.py"
+  }
+}

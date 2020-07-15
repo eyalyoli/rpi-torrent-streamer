@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { ITEMS_IN_ROW } from "../commons/constants";
+// import { ITEMS_IN_ROW } from "../commons/constants";
+const cfg = require("../../commons/config.json").client
 
 export function Results(props) {
   async function downloadTorrent(magnet) {
@@ -24,7 +25,7 @@ export function Results(props) {
 
   let i = 0;
   const grid = (cont) => {
-    if (i++ % (ITEMS_IN_ROW) === 0) {
+    if (i++ % (cfg.ITEMS_IN_ROW) === 0) {
       return <Row>{cont}</Row>;
     } else {
       return cont;
