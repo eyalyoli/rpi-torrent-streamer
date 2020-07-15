@@ -17,6 +17,6 @@
       "Yts",
       "KickassTorrents"
     ],
-    "PY_SCRIPT_PATH": "qbittorrent.py"
+    "PY_SCRIPT_PATH": "./src/server/qbittorrent.py"
   }
 }
