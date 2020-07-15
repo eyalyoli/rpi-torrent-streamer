@@ -6,7 +6,7 @@
 
   "server": {
     "PLAYER_CMD": "vlc",
-    "TORRENT_READY_TO_STREAM_THRESHOLD": 0.1,
+    "TORRENT_READY_TO_STREAM_THRESHOLD": 0.06,
     "TORRENT_CLIENT_CMD": "qbittorrent",
     "SEARCH_LIMIT": 20,
     "ALL_PROVIDERS": [
