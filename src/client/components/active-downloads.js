@@ -69,7 +69,13 @@ export function ActiveDownloads(props) {
             <Card.Subtitle className="mb-2 text-muted">
               {dlPercent}% @{" " + dlSpeed}
             </Card.Subtitle>
-            <Card.Text>N/a</Card.Text>
+            <Card.Text>
+              {dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD ? (
+                <p style={{ color: "green" }}>Ready!</p>
+              ) : (
+                <p style={{ color: "red" }}>Buffering...</p>
+              )}
+            </Card.Text>
             <Card.Link
               onClick={() =>
                 dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD
@@ -90,5 +96,5 @@ export function ActiveDownloads(props) {
     return list();
   });
 
-  return <Container>{listItems}</Container>;
+  return <Container><p>Active downloads</p>{listItems}</Container>;
 }
