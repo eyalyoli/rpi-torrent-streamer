@@ -1,11 +1,10 @@
-const cfg = require("../commons/config").server;
+const cfg = require("../commons/config");
 const cp = require("child_process");
 const tc = require("./torrent-client");
 const {
   runTorrentClient,
   getActiveTorrentsList,
   findTorrent,
-  getHash,
   search,
 } = require("./torrents-utils");
 
@@ -30,7 +29,7 @@ app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
   console.log("req provider", cfg.ALL_PROVIDERS[req.params.provider]);
   const r = await search(
-    cfg.ALL_PROVIDERS[req.params.provider],
+    cfg.common.ALL_PROVIDERS[req.params.provider],
     req.params.query
   );
   res.send(r);
@@ -70,7 +69,7 @@ app.get("/stream/:hash", async function(req, res) {
     await tc.getTorrentPath(hash, async (err, result) => {
       if (err) res.status(500).send("error");
       const playerProc = await cp.exec(
-        cfg.PLAYER_CMD + ' "' + result.path + '"'
+        cfg.server.PLAYER_CMD + ' "' + result.path + '"'
       );
       console.log("running player at " + playerProc.pid);
       res.send("OK");

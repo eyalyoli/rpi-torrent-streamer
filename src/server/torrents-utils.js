@@ -37,11 +37,19 @@ exports.findTorrent = (hash, list) => {
 };
 
 exports.search = async (provider, query) => {
-  return await TorrentSearchApi.search(
+  const res = await TorrentSearchApi.search(
     [provider],
     query,
     "All",
     cfg.SEARCH_LIMIT
+  );
+
+  return await Promise.all(
+    res.map(async (t) => {
+      const m = await TorrentSearchApi.getMagnet(t);
+      t.magnetLink = m;
+      return t;
+    })
   );
 };
 

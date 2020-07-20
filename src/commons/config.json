@@ -5,10 +5,7 @@
     "REFRESH_INTERVALS": 5000
   },
 
-  "server": {
-    "PLAYER_CMD": "vlc",
-    "TORRENT_CLIENT_CMD": "qbittorrent",
-    "SEARCH_LIMIT": 20,
+  "common": {
     "ALL_PROVIDERS": [
       "ThePirateBay",
       "1337x",
@@ -16,7 +13,13 @@
       "Eztv",
       "Yts",
       "KickassTorrents"
-    ],
+    ]
+  },
+
+  "server": {
+    "PLAYER_CMD": "vlc",
+    "TORRENT_CLIENT_CMD": "qbittorrent",
+    "SEARCH_LIMIT": 20,
     "PY_SCRIPT_PATH": "./src/server/qbittorrent.py"
   }
 }
