@@ -85,6 +85,8 @@ export function ActiveDownloads(props) {
               )}
             </Card.Text>
             <Card.Link
+              class="btn btn-secondary btn-lg"
+              style={{ color: "white" }}
               onClick={() =>
                 dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD
                   ? streamTorrent(res.hash)
@@ -95,7 +97,11 @@ export function ActiveDownloads(props) {
             >
               Stream
             </Card.Link>
-            <Card.Link onClick={() => removeTorrent(res.hash)}>
+            <Card.Link
+              class="btn btn-secondary btn-lg"
+              style={{ color: "white" }}
+              onClick={() => removeTorrent(res.hash)}
+            >
               Remove
             </Card.Link>
           </Card.Body>

@@ -61,7 +61,11 @@ export function Results(props) {
             {res.size} {res.seeds}s/{res.peers}p
           </Card.Subtitle>
           <Card.Text>N/a</Card.Text>
-          <Card.Link onClick={() => downloadTorrent(res.magnetLink)}>
+          <Card.Link
+            onClick={() => downloadTorrent(res.magnetLink)}
+            class="btn btn-secondary btn-lg"
+            style={{ color: "white" }}
+          >
             Download
           </Card.Link>
         </Card.Body>

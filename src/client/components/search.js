@@ -40,8 +40,8 @@ export function Search(props) {
   }
 
   return (
-    <Container>
-      <Row>
+    <Container fluid>
+      <Row className="justify-content-md-center">
         <InputGroup size="lg" style={{ width: "20rem" }}>
           <FormControl
             aria-label="Large"
@@ -52,7 +52,7 @@ export function Search(props) {
           />
         </InputGroup>
 
-        <ButtonGroup toggle className="mb-2">
+        <ButtonGroup toggle>
           <ToggleButton
             type="checkbox"
             variant="secondary"
@@ -61,11 +61,11 @@ export function Search(props) {
             value="1"
             onChange={(e) => setIsSeries(e.currentTarget.checked)}
           >
-            Series
+            Series?
           </ToggleButton>
         </ButtonGroup>
         <div style={{ display: isSeries ? "initial" : "none" }}>
-          <InputGroup size="lg" style={{ width: "15rem" }}>
+          <InputGroup size="lg">
             <InputGroup.Prepend>
               <InputGroup.Text id="inputGroup-sizing-lg">s</InputGroup.Text>
             </InputGroup.Prepend>
@@ -73,6 +73,7 @@ export function Search(props) {
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
               value={season}
+              style={{ width: "3rem" }}
               onChange={(e) => setSeason(e.target.value)}
             />
             <InputGroup.Append>
@@ -90,7 +91,7 @@ export function Search(props) {
               </Button>
             </InputGroup.Append>
           </InputGroup>
-          <InputGroup size="lg" style={{ width: "15rem" }}>
+          <InputGroup size="lg">
             <InputGroup.Prepend>
               <InputGroup.Text id="inputGroup-sizing-lg">e</InputGroup.Text>
             </InputGroup.Prepend>
@@ -98,6 +99,7 @@ export function Search(props) {
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
               value={episode}
+              style={{ width: "3rem" }}
               onChange={(e) => setEpisode(e.target.value)}
             />
             <InputGroup.Append>

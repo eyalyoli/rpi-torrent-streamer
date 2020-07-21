@@ -24,8 +24,32 @@
   color: white;
 }
 
+input.form-control {
+  height: inherit !important
+}
+
 .App-link {
   color: #61dafb;
+}
+
+.card {
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0rem;
+}
+
+.input-group {
+  margin-right: 1rem;
+}
+
+.input-group-prepend {
+    margin-left: 1rem;
+}
+
+a.btn {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 @keyframes App-logo-spin {
