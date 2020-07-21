@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Modal, Button } from "react-bootstrap";
 const cfg = require("../../commons/config.json").client;
 
 export function ActiveDownloads(props) {
   const [downloads, setDownloads] = useState([]);
+  const [show, setShow] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = (msg) => {
+    setShow(true);
+    setMsg(msg);
+  };
 
   useEffect(() => {
     get();
@@ -16,7 +24,7 @@ export function ActiveDownloads(props) {
     try {
       const res = await fetch(`/stream/${hash}`);
       if (res.ok) {
-        alert("stream began");
+        handleShow("Stream has began");
       } else {
         console.error("cannot start stream!");
       }
@@ -29,7 +37,7 @@ export function ActiveDownloads(props) {
     try {
       const res = await fetch(`/remove/${hash}`);
       if (res.ok) {
-        alert("torrent removed");
+        handleShow("Torrent removed");
       } else {
         console.error("cannot remove torrent!");
       }
@@ -80,7 +88,9 @@ export function ActiveDownloads(props) {
               onClick={() =>
                 dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD
                   ? streamTorrent(res.hash)
-                  : alert("still buffering... torrent is not ready to stream")
+                  : handleShow(
+                      "Still buffering... Torrent is not ready to stream"
+                    )
               }
             >
               Stream
@@ -96,5 +106,21 @@ export function ActiveDownloads(props) {
     return list();
   });
 
-  return <Container><p>Active downloads</p>{listItems}</Container>;
+  return (
+    <Container>
+      <p>Active downloads</p>
+      {listItems}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{msg}</Modal.Title>
+        </Modal.Header>
+        {/* <Modal.Body>{msg}</Modal.Body> */}
+        <Modal.Footer>
+          <Button variant="secondary" size="lg" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
+  );
 }

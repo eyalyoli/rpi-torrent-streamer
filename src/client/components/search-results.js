@@ -1,10 +1,18 @@
-import React, { useRef } from "react";
-import { Container, Row, Card } from "react-bootstrap";
+import React, { useRef, useState } from "react";
+import { Container, Row, Card, Modal, Button } from "react-bootstrap";
 // import { ITEMS_IN_ROW } from "../commons/constants";
 const cfg = require("../../commons/config.json").client;
 
 export function Results(props) {
   const refs = useRef(true);
+  const [show, setShow] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = (msg) => {
+    setShow(true);
+    setMsg(msg);
+  };
 
   function firstRender() {
     if (refs.current) {
@@ -24,7 +32,9 @@ export function Results(props) {
         body: JSON.stringify({ magnet: magnet }),
       });
       if (res.ok) {
-        alert("started download");
+        handleShow(
+          "Download started... You can stream it from the active downloads"
+        );
       } else {
         console.error("cant start download!");
       }
@@ -66,6 +76,17 @@ export function Results(props) {
         : firstRender()
         ? ""
         : "No results found!"}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{msg}</Modal.Title>
+        </Modal.Header>
+        {/* <Modal.Body>{msg}</Modal.Body> */}
+        <Modal.Footer>
+          <Button variant="secondary" size="lg" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

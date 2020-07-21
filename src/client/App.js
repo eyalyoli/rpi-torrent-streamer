@@ -12,13 +12,10 @@ function App() {
     <div className="App">
       <Container fluid>
         <Row>
-          <Col>
             <Search
               refresh={(r) => setResults(r)}
               loading={() => setResults(null)}
-              test="bbb"
             />
-          </Col>
         </Row>
         <Row>
           <Col xs={10}>

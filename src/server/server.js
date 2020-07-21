@@ -27,7 +27,7 @@ var server = app.listen(process.env.PORT || 5050, async function() {
 // >>>>>>>>>>>>>>>>> Routing >>>>>>>>>>>>>>>>>
 app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
-  console.log("req provider", cfg.ALL_PROVIDERS[req.params.provider]);
+  console.log("req provider", cfg.common.ALL_PROVIDERS[req.params.provider]);
   const r = await search(
     cfg.common.ALL_PROVIDERS[req.params.provider],
     req.params.query
