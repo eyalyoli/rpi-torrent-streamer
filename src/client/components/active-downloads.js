@@ -71,7 +71,11 @@ export function ActiveDownloads(props) {
       else dlSpeed = Math.round(dlSpeed) + " Mb/s";
 
       return (
-        <Card style={{ width: "18rem" }} key={res.hash}>
+        <Card
+          className="activedown-card"
+          style={{ width: "18rem" }}
+          key={res.hash}
+        >
           <Card.Body>
             <Card.Title>{res.name}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
@@ -114,7 +118,7 @@ export function ActiveDownloads(props) {
 
   return (
     <Container>
-      <p>Active downloads</p>
+      <p class="h5">Active downloads</p>
       {listItems}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

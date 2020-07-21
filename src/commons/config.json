@@ -19,7 +19,7 @@
   "server": {
     "PLAYER_CMD": "vlc",
     "TORRENT_CLIENT_CMD": "qbittorrent",
-    "SEARCH_LIMIT": 20,
+    "SEARCH_LIMIT": 50,
     "PY_SCRIPT_PATH": "./src/server/qbittorrent.py"
   }
 }

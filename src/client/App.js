@@ -7,20 +7,24 @@ import { ActiveDownloads } from "./components/active-downloads";
 
 function App() {
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="App">
       <Container fluid>
         <Row>
-            <Search
-              refresh={(r) => setResults(r)}
-              loading={() => setResults(null)}
-            />
+          <Search
+            refresh={(r) => {
+              setResults(r);
+              setLoading(false);
+            }}
+            loading={() => setLoading(true)}
+          />
         </Row>
         <Row>
           <Col xs={10}>
-            {results?.length < 0 ? (
-              <Spinner animation="border" />
+            {loading ? (
+              <Spinner style={{ margin: "5rem" }} animation="border" />
             ) : (
               <Results results={results} />
             )}
