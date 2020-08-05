@@ -6,11 +6,16 @@ export function ActiveDownloads(props) {
   const [downloads, setDownloads] = useState([]);
   const [show, setShow] = useState(false);
   const [msg, setMsg] = useState("");
+  const [yesNo, setYesNo] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = (msg) => {
-    setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    setYesNo(false);
+  };
+  const handleShow = (msg, yesNo = false) => {
+    setYesNo(yesNo);
     setMsg(msg);
+    setShow(true);
   };
 
   useEffect(() => {
@@ -33,17 +38,25 @@ export function ActiveDownloads(props) {
     }
   }
 
-  async function removeTorrent(hash) {
-    try {
-      const res = await fetch(`/remove/${hash}`);
-      if (res.ok) {
-        handleShow("Torrent removed");
-      } else {
-        console.error("cannot remove torrent!");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const [yesFunc, setYesFunc] = useState(null);
+  function removeTorrent(hash) {
+    setYesFunc({
+      func: async () => {
+        try {
+          setShow(false);
+          setYesNo(false);
+          const res = await fetch(`/remove/${hash}`);
+          if (res.ok) {
+            handleShow("Torrent removed");
+          } else {
+            console.error("cannot remove torrent!");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      },
+    });
+    handleShow("Are you sure?", true);
   }
 
   async function get() {
@@ -102,7 +115,7 @@ export function ActiveDownloads(props) {
               Stream
             </Card.Link>
             <Card.Link
-              class="btn btn-secondary btn-lg"
+              class="btn btn-danger btn-lg"
               style={{ color: "white" }}
               onClick={() => removeTorrent(res.hash)}
             >
@@ -120,15 +133,37 @@ export function ActiveDownloads(props) {
     <Container>
       <p class="h5">Active downloads</p>
       {listItems}
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop={yesNo ? "static" : true}
+      >
         <Modal.Header closeButton>
           <Modal.Title>{msg}</Modal.Title>
         </Modal.Header>
-        {/* <Modal.Body>{msg}</Modal.Body> */}
         <Modal.Footer>
-          <Button variant="secondary" size="lg" onClick={handleClose}>
-            Close
-          </Button>
+          {yesNo ? (
+            <>
+              <Button variant="danger" size="lg" onClick={yesFunc.func}>
+                Yes
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => {
+                  setShow(false);
+                  setMsg(null);
+                  setYesNo(false);
+                }}
+              >
+                No
+              </Button>
+            </>
+          ) : (
+            <Button variant="secondary" size="lg" onClick={handleClose}>
+              Close
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </Container>
