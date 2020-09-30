@@ -18,9 +18,9 @@ exports.getAllTorrents =  (cb) => {
     results
   ) {
     // results is an array consisting of messages collected during execution
-    //console.log("results: ", results);
+    console.log("results: ", results);
     //console.log("results: ", JSON.parse(results));
-    cb(err,JSON.parse(results))
+    cb(err,JSON.parse(results[0]))
   });
 };
 
@@ -31,7 +31,7 @@ exports.removeTorrent = (magnet,cb) => {
   ) {
     // results is an array consisting of messages collected during execution
     //console.log("results: %j", results);
-    cb(err, JSON.parse(results))
+    cb(err, JSON.parse(results[0]))
   });
 };
 
@@ -42,6 +42,6 @@ exports.getTorrentPath = (magnet,cb) => {
   ) {
     // results is an array consisting of messages collected during execution
     console.log("results: ", results);
-    cb(err, JSON.parse(results))
+    cb(err, JSON.parse(results[0]))
   });
 };
