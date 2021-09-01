@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## New version!!
+1. Will be based on deluge client (more lightwight)
+2. Replace python qbittorent controller with JS lib for controlling deluge directly
+
 ## Prerequisites
 Install qbittorrent
 
