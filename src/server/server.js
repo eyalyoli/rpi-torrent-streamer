@@ -73,26 +73,19 @@ app.get("/stream/:hash", async function(req, res) {
   const hash = req.params.hash;
   console.log("stream=" + JSON.stringify(hash));
 
-  if(!playerProc.killed){
+  if(playerProc && !playerProc.killed){
     res.status(400).send("a player is already streaming...");
   }
 
-  //check if downloading
-  const t = findTorrent(hash, currentTorrents);
-  if (t) {
-    await tc.getTorrentPath(hash, async (err, result) => {
-      if (err) res.status(400).send("error");
-      playerProc = await cp.exec(
-        cfg.server.PLAYER_CMD + ' "' + result.path + '"'
-      );
-      console.log("running player at " + playerProc.pid);
-      res.send("OK");
-    });
-  } else {
-    res
-      .status(404)
-      .send("torrent was not found. please download it before you stream.");
-  }
+  await tc.getTorrentPath(hash, async (err, result) => {
+    console.log(err, result)
+    if (err) res.status(400).send("error");
+    playerProc = await cp.exec(
+      cfg.server.PLAYER_CMD + ' "' + result.path + '"'
+    );
+    console.log("running player at " + playerProc.pid);
+    res.send("OK");
+  });
 });
 
 app.get("/streamkill", async function(req, res){

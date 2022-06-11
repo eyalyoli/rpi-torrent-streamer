@@ -1,5 +1,5 @@
 const TorrentSearchApi = require("torrent-search-api");
-const cfg = require("../commons/config").server;
+const cfg = require("./config.json").server;
 const cp = require("child_process");
 const tc = require("./torrent-client");
 

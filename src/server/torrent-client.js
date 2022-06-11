@@ -18,22 +18,29 @@ exports.getAllTorrents =  (cb) => {
   transmission.get(cb)
 };
 
-//TODO need to change magnet to id
-exports.removeTorrent = (magnet,cb) => {
-  transmission.remove(magnet, true, cb)
+exports.removeTorrent = (id, cb) => {
+  transmission.remove(id, true, cb)
 };
 
-exports.getTorrentPath = (magnet,cb) => {
-  transmission.get(magnet, function(err, torrent){
+exports.getTorrentPath = (id, cb) => {
+  transmission.get(id, function(err, torrents){
+    console.log(torrents)
     if (err) cb(err)
+    torrent = torrents.torrents[0]
+    if(torrent) cb('failed to find torrent')
 
     max_file_size = 0
     max_file_name = null
-    for (file in torrent.files){
+    for (file of torrent.files){
+      console.log(file)
         if (file.length > max_file_size)
           max_file_name = file.name
     }
 
-    cb(null, path.join(torrent.downloadDir, torrent.name, max_file_name))
+    if (!max_file_name)
+      cb('no files found in torrent')
+    full_path=path.join(torrent.downloadDir, torrent.name, max_file_name)
+    console.log(full_path)
+    cb(null, full_path)
   })
 };
