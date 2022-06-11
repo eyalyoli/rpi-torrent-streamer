@@ -64,7 +64,8 @@ export function ActiveDownloads(props) {
       const res = await fetch("/downloading");
       if (res.ok) {
         const json = await res.json();
-        setDownloads(json);
+        console.log(json)
+        setDownloads(json.torrents);
       } else {
         console.error("cant get active downloads!");
       }
