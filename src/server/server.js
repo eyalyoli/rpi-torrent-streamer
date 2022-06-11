@@ -1,6 +1,7 @@
 const cfg = require("../commons/config");
 const cp = require("child_process");
 const tc = require("./torrent-client");
+const path = require("path");
 const {
   runTorrentClient,
   getActiveTorrentsList,
@@ -17,7 +18,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //Setting up server
-var server = app.listen(process.env.PORT || 5050, async function() {
+var server = app.listen(process.env.SERVER_PORT || 5050, async function() {
   var port = server.address().port;
   console.log("App now running on port", port);
   await runTorrentClient();
@@ -25,6 +26,14 @@ var server = app.listen(process.env.PORT || 5050, async function() {
 // <<<<<<<<<<<<<<<<< Server init <<<<<<<<<<<<<<<<<
 
 // >>>>>>>>>>>>>>>>> Routing >>>>>>>>>>>>>>>>>
+react_build = process.env.PUBLIC_PATH || path.join(__dirname, "..", "..", "build")
+
+app.use(express.static(react_build))
+
+app.get("/", async function(req, res){
+  res.sendFile(path.join(react_build, "index.html"));
+})
+
 app.get("/search/:provider/:query", async function(req, res) {
   console.log(req.params);
   console.log("req provider", cfg.common.ALL_PROVIDERS[req.params.provider]);
