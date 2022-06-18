@@ -18,7 +18,7 @@
     "transmission": "^0.4.10"
   },
   "scripts": {
-    "start": "(npm run start:server) & (SERVER_PORT=5051 npm run start:client)",
+    "start": "(SERVER_PORT=5051 npm run start:server) & (npm run start:client)",
     "start:prod": "npm run build; npm run start:server",
     "start:client": "react-scripts start",
     "start:server": "node src/server/server.js",
