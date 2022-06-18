@@ -4,8 +4,6 @@ const tc = require("./torrent-client");
 const path = require("path");
 const {
   runTorrentClient,
-  getActiveTorrentsList,
-  findTorrent,
   search,
 } = require("./torrents-utils");
 
@@ -21,7 +19,7 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 var server = app.listen(process.env.SERVER_PORT || 5050, async function() {
   var port = server.address().port;
   console.log("App now running on port", port);
-  await runTorrentClient();
+  // await runTorrentClient();
 });
 // <<<<<<<<<<<<<<<<< Server init <<<<<<<<<<<<<<<<<
 
@@ -62,10 +60,11 @@ app.get("/remove/:hash", async function(req, res) {
 
 let currentTorrents = [];
 app.get("/downloading", function(req, res) {
-  getActiveTorrentsList((ts) => {
+  tc.getAllTorrents((err, ts) => {
+    if (err) throw err;
     currentTorrents = ts;
     res.json(ts);
-  });
+  })
 });
 
 var playerProc = null
