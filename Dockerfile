@@ -15,8 +15,11 @@ RUN service transmission-daemon stop
 COPY transmission-settings.json /root/.config/transmission-daemon/settings.json
 RUN service transmission-daemon start 
 
+# client
 COPY build public
+# commons
 COPY src/commons commons
+# server
 COPY src/server server
 
 ENV PUBLIC_PATH=/app/public
