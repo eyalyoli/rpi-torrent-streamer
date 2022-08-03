@@ -9,7 +9,9 @@ echo 'Done'
 
 echo 'Configuring torrent client...'
 sudo service transmission-daemon stop 
-sudo cp transmission-settings.json /root/.config/transmission-daemon/settings.json
+mkdir -p $HOME/.config/transmission-daemon
+mkdir -p $HOME/Downloads
+cat transmission-settings.json | sed 's@/root@'"$HOME"'@' > $HOME/.config/transmission-daemon/settings.json
 sudo service transmission-daemon start 
 echo 'Done'
 
@@ -17,7 +19,7 @@ echo 'Done'
 
 echo 'Installing nvm + npm + node...'
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
-export NVM_DIR="/home/pi/.nvm"
+export NVM_DIR="/home/$USER/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm install node
 echo 'Done'
