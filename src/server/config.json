@@ -1,0 +1,10 @@
+{
+  "server": {
+    "PLAYER_CMD": "vlc",
+    "SEARCH_LIMIT": 50,
+    "PY_SCRIPT_PATH": "./src/server/qbittorrent.py",
+    "TORRENT_USER": "pi",
+    "TORRENT_PASSWORD": "rpi-torrent-streamer",
+    "TORRENT_PORT": 9091
+  }
+}

@@ -1,5 +1,5 @@
 const TorrentSearchApi = require("torrent-search-api");
-const cfg = require("../commons/config").server;
+const cfg = require("./config.json").server;
 const cp = require("child_process");
 const tc = require("./torrent-client");
 
@@ -13,28 +13,17 @@ exports.runTorrentClient = async () => {
   console.log("torrent client is running " + tcProc.pid);
 };
 
-exports.getActiveTorrentsList = (cb) => {
-  tc.getAllTorrents((err, ts) => {
-    if (err) throw err;
-    // if (ts)
-    //   console.log(
-    //     "current torrents list updated with " + ts.length + " entries"
-    //   );
-    cb(ts);
-  });
-};
-
-exports.findTorrent = (hash, list) => {
-  let res = undefined;
-  list.forEach((t) => {
-    console.log(t.hash, hash);
-    if (t.hash === hash) {
-      console.log("got");
-      res = t;
-    }
-  });
-  return res;
-};
+// exports.findTorrent = (hash, list) => {
+//   let res = undefined;
+//   list.forEach((t) => {
+//     console.log(t.hash, hash);
+//     if (t.hash === hash) {
+//       console.log("got");
+//       res = t;
+//     }
+//   });
+//   return res;
+// };
 
 exports.search = async (provider, query) => {
   const res = await TorrentSearchApi.search(

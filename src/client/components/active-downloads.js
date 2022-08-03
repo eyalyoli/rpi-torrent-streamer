@@ -64,7 +64,8 @@ export function ActiveDownloads(props) {
       const res = await fetch("/downloading");
       if (res.ok) {
         const json = await res.json();
-        setDownloads(json);
+        console.log(json)
+        setDownloads(json.torrents);
       } else {
         console.error("cant get active downloads!");
       }
@@ -75,11 +76,8 @@ export function ActiveDownloads(props) {
 
   const listItems = downloads.map((res) => {
     const list = () => {
-      const dlPercent = Math.min(
-        Math.round((res.downloaded / res.size) * 100),
-        100
-      );
-      let dlSpeed = res.dlspeed / 1000000;
+      const dlPercent = Math.round(res.percentDone * 100);
+      let dlSpeed = res.rateDownload / 1000000;
       if (dlSpeed < 1) dlSpeed = Math.round(dlSpeed * 1000) + " Kb/s";
       else dlSpeed = Math.round(dlSpeed) + " Mb/s";
 
@@ -106,7 +104,7 @@ export function ActiveDownloads(props) {
               style={{ color: "white" }}
               onClick={() =>
                 dlPercent >= cfg.TORRENT_READY_TO_STREAM_THRESHOLD
-                  ? streamTorrent(res.hash)
+                  ? streamTorrent(res.hashString)
                   : handleShow(
                       "Still buffering... Torrent is not ready to stream"
                     )
@@ -117,7 +115,7 @@ export function ActiveDownloads(props) {
             <Card.Link
               class="btn btn-danger btn-lg"
               style={{ color: "white" }}
-              onClick={() => removeTorrent(res.hash)}
+              onClick={() => removeTorrent(res.hashString)}
             >
               Remove
             </Card.Link>
