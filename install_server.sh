@@ -1,16 +1,23 @@
 #!/bin/bash
 
 # install & config transmission torrent client + vlc 
-apt-get update && apt-get install -y \
-  transmission-cli \
-  transmission-common \
-  transmission-daemon \
-  vlc 
+echo -n 'Installing torrent client & VLC...'
+sudo apt update 
+sudo apt install -y transmission-cli transmission-common transmission-daemon 
+sudo apt install vlc
+echo ' Done'
 
-service transmission-daemon stop 
+echo -n 'Configuring torrent client...'
+sudo service transmission-daemon stop 
 sudo cp transmission-settings.json /root/.config/transmission-daemon/settings.json
-service transmission-daemon start 
+sudo service transmission-daemon start 
+echo ' Done'
 
 # install & build source code
+
+echo -n 'Configuring torrent client...'
 npm install
 npm run build
+echo ' Done'
+
+echo '\nYou can now run the server!'
